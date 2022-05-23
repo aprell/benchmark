@@ -9,11 +9,9 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
-sys.path.append("../utils")
-
-from benchmark import benchmark, get_logfile, get_logfiles, get_run_times
-from stats import headers, print_csv, print_table, summarize
-from testrun import FAIL as BAD, PASS as GOOD, RESET
+from src.benchmark import benchmark, get_logfile, get_logfiles, get_run_times
+from src.stats import headers, print_csv, print_table, summarize
+from src.testrun import FAIL as BAD, PASS as GOOD, RESET
 
 
 class BenchmarkConfig:
@@ -166,7 +164,7 @@ def diff(cmds, func):
     print_table(np.r_[[a[0,:-4]], np.c_[a[1:,0], d]].tolist())
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser()
     run_group = parser.add_mutually_exclusive_group()
     rep_group = parser.add_mutually_exclusive_group()
@@ -260,3 +258,6 @@ if __name__ == "__main__":
     if args.diff:
         diff(args.diff, func=actual_diff)
         diff(args.diff, func=relative_diff)
+
+if __name__ == "__main__":
+    main()
