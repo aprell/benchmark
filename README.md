@@ -1,2 +1,8 @@
 # benchmark
-Tools to aid in benchmarking parallel runtime systems/libraries
+
+Install package in editable mode for development:
+
+```console
+$ git clone https://github.com/aprell/benchmark
+$ pip install --user -e benchmark
+```
