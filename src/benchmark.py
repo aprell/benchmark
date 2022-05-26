@@ -26,7 +26,10 @@ def get_logfile(cmd, suffix=None, ext=None):
     if len(cmd) > 1:
         logfile += "_" + "_".join(cmd[1:])
     if suffix:
-        logfile += f"_{suffix:03}"
+        if type(suffix) == int:
+            logfile += f"_{suffix:03}"
+        else:
+            logfile += f"_{suffix}"
     if ext:
         logfile += f".{ext}"
     return logfile

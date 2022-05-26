@@ -1,4 +1,4 @@
-import pytest
+from pytest import raises
 from src.benchmark import get_logfile, get_logfiles, get_run_times
 
 
@@ -13,9 +13,7 @@ def test_get_logfile_with_suffix():
     assert get_logfile(["x"], suffix=1) == "benchmark.output/x_001"
     assert get_logfile(["./x"], suffix=2) == "benchmark.output/./x_002"
     assert get_logfile(["a/b/c/x"], suffix=3) == "benchmark.output/a/b/c/x_003"
-
-    with pytest.raises(ValueError):
-        get_logfile(["a/b/c/x", "1", "2", "3"], suffix="4")
+    assert get_logfile(["a/b/c/x", "1", "2", "3"], suffix="4") ==  "benchmark.output/a/b/c/x_1_2_3_4"
 
 
 def test_get_logfile_with_ext():
@@ -43,5 +41,5 @@ def test_get_run_times():
     assert get_run_times("benchmark.output/x_008.log") == [4, 4.3, 4.1]
     assert get_run_times("benchmark.output/x_016.log") == []
 
-    with pytest.raises(FileNotFoundError):
+    with raises(FileNotFoundError):
         get_run_times("benchmark.output/x_032.log")
