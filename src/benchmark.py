@@ -48,7 +48,7 @@ def get_logfiles(cmd, ext=None):
 def get_run_times(logfile):
     run_times = []
     with open(logfile) as file:
-        elapsed = re.compile(r"[^:]*: (\d+(?:\.\d*)?)")
+        elapsed = re.compile(r"[^:]*: *(\d+(?:\.\d*)?)")
         for line in file:
             match = re.search(elapsed, line)
             if match:
