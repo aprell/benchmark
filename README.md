@@ -6,3 +6,9 @@ Install package in editable mode for development:
 $ git clone https://github.com/aprell/benchmark
 $ pip install --user -e benchmark
 ```
+
+Run tests:
+
+```console
+$ (cd benchmark/test && pytest -v)
+```
