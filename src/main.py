@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
-import configparser
 import os
-import sys
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -12,36 +10,7 @@ import numpy as np
 from src.benchmark import benchmark, get_logfile, get_logfiles, get_run_times
 from src.stats import headers, print_csv, print_table, summarize
 from src.utils import GREEN as GOOD, RED as BAD, RESET
-
-
-class BenchmarkConfig:
-    @classmethod
-    def read_list(_, lst, type=str):
-        return [type(x.strip()) for x in lst.split(",")]
-
-    def __init__(self, configfile):
-        self.config = configparser.ConfigParser()
-        self.config.read(configfile)
-
-        self.benchmarks = BenchmarkConfig.read_list(self.config.get("Benchmark", "benchmarks"))
-        self.runtimes = BenchmarkConfig.read_list(self.config.get("Benchmark", "runtimes"))
-        self.num_threads = self.config.get("Benchmark", "num_threads")
-
-        self.environment = {}
-        for var, value in self.config["Environment"].items():
-            self.environment[var.upper()] = value
-
-        assert(self.num_threads in self.environment)
-        self.environment[self.num_threads] = BenchmarkConfig.read_list(self.environment[self.num_threads], type=int)
-
-    def print(self):
-        print("[Benchmark]")
-        print("benchmarks =", self.benchmarks)
-        print("runtimes =", self.runtimes)
-        print("num_threads =", self.num_threads)
-        print("\n[Environment]")
-        for k, v in self.environment.items():
-            print(k, "=", v)
+from src.config import Config
 
 
 def transform(func):
@@ -226,7 +195,7 @@ def main():
     if args.output and not args.plot:
         parser.error("argument -o/--output requires --plot")
 
-    config = BenchmarkConfig("bench.cfg")
+    config = Config("bench.cfg")
 
     if args.run:
         for cmd in args.run:
