@@ -11,7 +11,7 @@ import numpy as np
 
 from src.benchmark import benchmark, get_logfile, get_logfiles, get_run_times
 from src.stats import headers, print_csv, print_table, summarize
-from src.testrun import FAIL as BAD, PASS as GOOD, RESET
+from src.utils import GREEN as GOOD, RED as BAD, RESET
 
 
 class BenchmarkConfig:

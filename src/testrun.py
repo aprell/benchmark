@@ -2,17 +2,9 @@
 
 import argparse
 import subprocess
-import sys
 
-
-RESET = "\033[0m"
-BOLD = "\033[1m"
-FAIL = "\033[31m"
-PASS = "\033[32m"
-
-
-def eprint(*args, **kwargs):
-    print(*args, file=sys.stderr, flush=True, **kwargs)
+from .utils import BOLD, RED, RESET
+from .utils import eprint
 
 
 def testrun(cmd, repetitions=10, stdout=None, stderr=None):
@@ -23,7 +15,7 @@ def testrun(cmd, repetitions=10, stdout=None, stderr=None):
             eprint(".", end='')
             subprocess.run(cmd, stdout=stdout, stderr=stderr, check=True)
     except subprocess.CalledProcessError:
-        eprint(f"\b{BOLD}{FAIL}X{RESET}", end='')
+        eprint(f"\b{BOLD}{RED}X{RESET}", end='')
 
     eprint()
 
