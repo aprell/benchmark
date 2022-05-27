@@ -10,5 +10,5 @@ $ pip install --user -e benchmark
 Run tests:
 
 ```console
-$ (cd benchmark/test && pytest -v)
+$ (cd benchmark/test && pytest -sv)
 ```
