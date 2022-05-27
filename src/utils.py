@@ -11,5 +11,5 @@ def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, flush=True, **kwargs)
 
 
-def read_list(lst, type=str):
-    return [type(x.strip()) for x in lst.split(",")] if lst else []
+def read_list(lst, sep=",", elem=str):
+    return [elem(x.strip()) for x in lst.split(sep)] if type(lst) == str else []

@@ -8,9 +8,9 @@ class Config:
         self.config = configparser.ConfigParser()
         self.config.read(configfile)
 
-        self.benchmarks = read_list(self.config.get("Benchmark", "benchmarks", fallback=""))
-        self.runtimes = read_list(self.config.get("Benchmark", "runtimes", fallback=""))
-        self.num_threads = self.config.get("Benchmark", "num_threads", fallback="")
+        self.benchmarks = read_list(self.config.get("Benchmark", "benchmarks", fallback=[]))
+        self.runtimes = read_list(self.config.get("Benchmark", "runtimes", fallback=[]))
+        self.num_threads = self.config.get("Benchmark", "num_threads", fallback=None)
 
         self.environment = {}
         if "Environment" in self.config:
@@ -19,7 +19,7 @@ class Config:
 
         if self.num_threads:
             assert(self.num_threads in self.environment)
-            self.environment[self.num_threads] = read_list(self.environment[self.num_threads], type=int)
+            self.environment[self.num_threads] = read_list(self.environment[self.num_threads], elem=int)
 
     def print(self):
         print("[Benchmark]")
