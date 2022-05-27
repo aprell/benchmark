@@ -19,7 +19,7 @@ def test_report_run_time_a(capfd):
 
 
 def test_report_speedup_a(capfd):
-    report("a/y 30 10", transform=speedups)
+    report("a/y 30 10", speedups)
     assert capfd.readouterr().out == \
 """
  a/y 30 10
@@ -36,7 +36,7 @@ def test_report_speedup_a(capfd):
 
 
 def test_report_efficiency_a(capfd):
-    report("a/y 30 10", transform=efficiencies)
+    report("a/y 30 10", efficiencies)
     assert capfd.readouterr().out == \
 """
  a/y 30 10
@@ -70,7 +70,7 @@ def test_report_run_time_b(capfd):
 
 
 def test_report_speedup_b(capfd):
-    report("b/y 30 10", transform=speedups)
+    report("b/y 30 10", speedups)
     assert capfd.readouterr().out == \
 """
  b/y 30 10
@@ -87,7 +87,7 @@ def test_report_speedup_b(capfd):
 
 
 def test_report_efficiency_b(capfd):
-    report("b/y 30 10", transform=efficiencies)
+    report("b/y 30 10", efficiencies)
     assert capfd.readouterr().out == \
 """
  b/y 30 10
