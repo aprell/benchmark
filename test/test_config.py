@@ -7,6 +7,7 @@ def test_config_01():
     assert not config.runtimes
     assert not config.num_threads
     assert not config.environment
+    assert config.repetitions == 10
 
 
 def test_config_02():
@@ -15,6 +16,7 @@ def test_config_02():
     assert not config.runtimes
     assert config.num_threads == "OMP_NUM_THREADS"
     assert config.environment["OMP_NUM_THREADS"] == [1, 2, 4, 8, 16]
+    assert config.repetitions == 10
 
 
 def test_config_03():
@@ -23,3 +25,4 @@ def test_config_03():
     assert config.runtimes == ["a", "b", "c"]
     assert config.num_threads == "OMP_NUM_THREADS"
     assert config.environment["OMP_NUM_THREADS"] == [1, 2, 4, 8, 16]
+    assert config.repetitions == 5

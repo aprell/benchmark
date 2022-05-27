@@ -44,7 +44,7 @@ def run(cmd, config):
 
     for n in config.environment[config.num_threads]:
         os.environ[config.num_threads] = str(n)
-        benchmark(cmd, env=config.num_threads)
+        benchmark(cmd, config.repetitions, env=config.num_threads)
 
     csv_file = get_logfile(cmd, ext="csv")
     if os.path.exists(csv_file):
