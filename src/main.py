@@ -35,16 +35,17 @@ def efficiencies(numbers, base=None):
     return [[int(n), *reversed([base/x/n for x in xs])] for n, *xs in numbers]
 
 
-def run(cmd, config):
-    os.environ.update({
-        k: v for k, v in config.environment.items()
-        if k != config.num_threads})
+def expand(var):
+    return os.environ.get(var[1:]) if var.startswith("$") else var
 
+
+def run(cmd, config):
     cmd = cmd.split()
 
-    for n in config.environment[config.num_threads]:
-        os.environ[config.num_threads] = str(n)
-        benchmark(cmd, config.repetitions, env=config.num_threads)
+    for n in config.num_threads:
+        os.environ["NUM_THREADS"] = str(n)
+        os.environ.update({k: expand(v) for k, v in config.environment.items()})
+        benchmark(cmd, config.repetitions)
 
     csv_file = get_logfile(cmd, ext="csv")
     if os.path.exists(csv_file):

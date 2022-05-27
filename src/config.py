@@ -10,17 +10,13 @@ class Config:
 
         self.benchmarks = read_list(self.config.get("Benchmark", "benchmarks", fallback=[]))
         self.runtimes = read_list(self.config.get("Benchmark", "runtimes", fallback=[]))
-        self.num_threads = self.config.get("Benchmark", "num_threads", fallback=None)
+        self.num_threads = read_list(self.config.get("Benchmark", "num_threads", fallback=[1]), elem=int)
         self.repetitions = self.config.getint("Benchmark", "repetitions", fallback=10)
 
         self.environment = {}
         if "Environment" in self.config:
             for var, value in self.config["Environment"].items():
                 self.environment[var.upper()] = value
-
-        if self.num_threads:
-            assert(self.num_threads in self.environment)
-            self.environment[self.num_threads] = read_list(self.environment[self.num_threads], elem=int)
 
     def print(self):
         print("[Benchmark]")

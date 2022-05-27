@@ -57,13 +57,13 @@ def get_run_times(logfile):
     return run_times
 
 
-def benchmark(cmd, repetitions=10, show_statistics=False, env="OMP_NUM_THREADS"):
-    num_threads = get_num_threads(env)
+def benchmark(cmd, repetitions=10, show_statistics=False):
+    num_threads = get_num_threads("NUM_THREADS")
     logfile = get_logfile(cmd, suffix=num_threads, ext="log")
     os.makedirs(os.path.dirname(logfile), exist_ok=True)
 
     with open(logfile, "w") as file:
-        eprint(f"{env}={num_threads} ", end='')
+        eprint(f"NUM_THREADS={num_threads} ", end='')
         testrun(cmd, repetitions, stdout=file)
 
     if show_statistics:

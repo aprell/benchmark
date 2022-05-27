@@ -12,4 +12,7 @@ def eprint(*args, **kwargs):
 
 
 def read_list(lst, sep=",", elem=str):
-    return [elem(x.strip()) for x in lst.split(sep)] if type(lst) == str else []
+    if type(lst) == str:
+        return [elem(x.strip()) for x in lst.split(sep)]
+    else:
+        return lst if type(lst) == list else []
