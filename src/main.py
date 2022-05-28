@@ -8,10 +8,10 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
-from src.benchmark import benchmark, get_logfile, get_logfiles, get_run_times
-from src.stats import headers, print_csv, print_table, summarize
-from src.utils import GREEN as GOOD, RED as BAD, RESET, run as test_run
 from src.config import Config
+from src.stats import headers, print_csv, print_table, summarize
+from src.utils import eprint, get_logfile, get_logfiles, get_run_times, run as do_run
+from src.utils import GREEN as GOOD, RED as BAD, RESET
 
 
 def transform(func):
@@ -36,13 +36,9 @@ def efficiencies(numbers, base=None):
     return [[int(n), *reversed([base/x/n for x in xs])] for n, *xs in numbers]
 
 
-def expand(var):
-    return os.environ.get(var[1:]) if var.startswith("$") else var
-
-
 def test(cmd, config):
     cmd = cmd.split()
-    test_run(cmd, config.repetitions, stdout=subprocess.DEVNULL)
+    do_run(cmd, config.repetitions, stdout=subprocess.DEVNULL)
 
 
 def test_all(config):
@@ -55,9 +51,16 @@ def run(cmd, config):
     cmd = cmd.split()
 
     for n in config.num_threads:
-        os.environ["NUM_THREADS"] = str(n)
-        os.environ.update({k: expand(v) for k, v in config.environment.items()})
-        benchmark(cmd, config.repetitions)
+        logfile = get_logfile(cmd, suffix=n, ext="log")
+        os.makedirs(os.path.dirname(logfile), exist_ok=True)
+
+        with open(logfile, "w") as file:
+            os.environ.update({
+                k: str(n) if v == "$NUM_THREADS" else v
+                for k, v in config.environment.items()
+            })
+            eprint(f"NUM_THREADS={n} ", end='')
+            do_run(cmd, config.repetitions, stdout=file)
 
     csv_file = get_logfile(cmd, ext="csv")
     if os.path.exists(csv_file):
