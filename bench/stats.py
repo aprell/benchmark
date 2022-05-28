@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 
 import argparse
+import os
 import statistics
 import sys
+
+from bench.utils import get_logfile, get_logfiles, get_run_times
 
 
 def mean_rsd(numbers):
@@ -105,6 +108,23 @@ def summarize(numbers):
 def print_stats(numbers, tabulate=True):
     stats = [headers, summarize(numbers)]
     print_table(stats) if tabulate else print_csv(stats)
+
+
+def get_stats(cmd):
+    cmd = cmd.split()
+    csv_file = get_logfile(cmd, ext="csv")
+    if not os.path.exists(csv_file):
+        with open(csv_file, "w") as file:
+            stats = [["#Threads"] + headers]
+            for n, logfile in get_logfiles(cmd, ext="log"):
+                stats.append([n] + summarize(get_run_times(logfile)))
+            print_csv(stats, file=file)
+    else:
+        with open(csv_file, "r") as file:
+            stats = []
+            for line in file:
+                stats.append(line.strip().split(","))
+    return stats
 
 
 if __name__ == "__main__":

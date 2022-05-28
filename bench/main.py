@@ -1,160 +1,17 @@
 #!/usr/bin/env python3
 
 import argparse
-import os
-import subprocess
-
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import numpy as np
 
 from bench.config import Config
-from bench.stats import headers, print_csv, print_table, summarize
-from bench.utils import eprint, get_logfile, get_logfiles, get_run_times, run as do_run
-from bench.utils import GREEN as GOOD, RED as BAD, RESET
+from bench.diff import actual_diff, diff, relative_diff
+from bench.metrics import efficiencies, speedups
+from bench.plot import plot
+from bench.report import report, report_all
+from bench.run import run, run_all
+from bench.test import test, test_all
 
 
-def transform(func):
-    def apply(stats, base=None):
-        # Remove column headers and last four columns
-        headers = stats[0][:-4]
-        numbers = np.array(stats)[1:,:-4].astype(float)
-        # Add back column headers
-        return [headers] + func(numbers)
-    return apply
-
-
-@transform
-def speedups(numbers, base=None):
-    base = base if base else numbers[0][4]
-    return [[int(n), *reversed([base/x for x in xs])] for n, *xs in numbers]
-
-
-@transform
-def efficiencies(numbers, base=None):
-    base = base if base else numbers[0][4]
-    return [[int(n), *reversed([base/x/n for x in xs])] for n, *xs in numbers]
-
-
-def test(cmd, config):
-    cmd = cmd.split()
-    do_run(cmd, config.repetitions, stdout=subprocess.DEVNULL)
-
-
-def test_all(config):
-    for benchmark in config.benchmarks:
-        for runtime in config.runtimes:
-            test(os.path.join(runtime, benchmark), config)
-
-
-def run(cmd, config):
-    cmd = cmd.split()
-
-    for n in config.num_threads:
-        logfile = get_logfile(cmd, suffix=n, ext="log")
-        os.makedirs(os.path.dirname(logfile), exist_ok=True)
-
-        with open(logfile, "w") as file:
-            os.environ.update({
-                k: str(n) if v == "$NUM_THREADS" else v
-                for k, v in config.environment.items()
-            })
-            eprint(f"NUM_THREADS={n} ", end='')
-            do_run(cmd, config.repetitions, stdout=file)
-
-    csv_file = get_logfile(cmd, ext="csv")
-    if os.path.exists(csv_file):
-        os.remove(csv_file)
-
-
-def run_all(config):
-    for benchmark in config.benchmarks:
-        for runtime in config.runtimes:
-            run(os.path.join(runtime, benchmark), config)
-
-
-def get_stats(cmd):
-    cmd = cmd.split()
-    csv_file = get_logfile(cmd, ext="csv")
-    if not os.path.exists(csv_file):
-        with open(csv_file, "w") as file:
-            stats = [["#Threads"] + headers]
-            for n, logfile in get_logfiles(cmd, ext="log"):
-                stats.append([n] + summarize(get_run_times(logfile)))
-            print_csv(stats, file=file)
-    else:
-        with open(csv_file, "r") as file:
-            stats = []
-            for line in file:
-                stats.append(line.strip().split(","))
-    return stats
-
-
-def report(cmd, transform=None, tabulate=True):
-    print("\n", cmd)
-    stats = get_stats(cmd)
-    if transform:
-        stats = transform(stats)
-    print_table(stats) if tabulate else print_csv(stats)
-
-
-def report_all(config, transform=None, tabulate=True):
-    for benchmark in config.benchmarks:
-        for runtime in config.runtimes:
-            report(os.path.join(runtime, benchmark), transform, tabulate)
-
-
-def plot(cmds, outfile, xlabel="Number of threads", ylabel="Median run times (ms)", transform=None):
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
-
-    for cmd in cmds:
-        stats = get_stats(cmd)
-        if transform:
-            stats = transform(stats)
-        # Remove column headers
-        stats = np.array(stats[1:])
-
-        num_threads = stats[:,0].astype(int)
-        median_values = stats[:,4].astype(float)
-        lower_errors = median_values - stats[:,2].astype(float)
-        upper_errors = stats[:,6].astype(float) - median_values
-
-        plt.errorbar(num_threads,
-                     median_values,
-                     yerr=[lower_errors, upper_errors],
-                     label=os.path.dirname(cmd).upper())
-
-    plt.legend()
-    plt.savefig(outfile)
-
-
-def format_number(n, suffix="", color=True):
-    if color:
-        return f"{BAD}+{n:.2f}{suffix}{RESET}" if n > 0 else f"{GOOD}{n:.2f}{suffix}{RESET}"
-    else:
-        return f"+{n:.2f}{suffix}" if n > 0 else f"{n:.2f}{suffix}"
-
-
-def actual_diff(a, b):
-    return a - b
-
-
-def relative_diff(a, b):
-    return (a - b) / b * 100
-
-
-def diff(cmds, func, unit, color=True):
-    def format(n):
-        return format_number(n, suffix=f" {unit}", color=color)
-    a = np.array(get_stats(cmds[0]))
-    b = np.array(get_stats(cmds[1]))
-    d = np.vectorize(format)(func(a[1:,1:-4].astype(float), b[1:,1:-4].astype(float)))
-    print("\n", cmds[0], "vs", cmds[1])
-    print_table(np.r_[[a[0,:-4]], np.c_[a[1:,0], d]].tolist())
-
-
-def main():
+def parse_args():
     parser = argparse.ArgumentParser()
     tst_group = parser.add_mutually_exclusive_group()
     run_group = parser.add_mutually_exclusive_group()
@@ -228,6 +85,11 @@ def main():
     if args.output and not args.plot:
         parser.error("argument -o/--output requires --plot")
 
+    return args
+
+
+def main():
+    args = parse_args()
     config = Config("bench.cfg")
 
     if args.test:

@@ -1,4 +1,4 @@
-from bench.main import diff, actual_diff, relative_diff
+from bench.diff import actual_diff, diff, relative_diff
 
 
 def test_actual_diff_a_b(capfd):
