@@ -7,8 +7,7 @@ import re
 import subprocess
 
 from .stats import print_stats
-from .testrun import testrun
-from .utils import eprint
+from .utils import eprint, run
 
 
 def get_num_threads(env):
@@ -64,7 +63,7 @@ def benchmark(cmd, repetitions=10, show_statistics=False):
 
     with open(logfile, "w") as file:
         eprint(f"NUM_THREADS={num_threads} ", end='')
-        testrun(cmd, repetitions, stdout=file)
+        run(cmd, repetitions, stdout=file)
 
     if show_statistics:
         print_stats(get_run_times(logfile))

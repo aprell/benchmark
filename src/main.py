@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import subprocess
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -9,7 +10,7 @@ import numpy as np
 
 from src.benchmark import benchmark, get_logfile, get_logfiles, get_run_times
 from src.stats import headers, print_csv, print_table, summarize
-from src.utils import GREEN as GOOD, RED as BAD, RESET
+from src.utils import GREEN as GOOD, RED as BAD, RESET, run as test_run
 from src.config import Config
 
 
@@ -37,6 +38,17 @@ def efficiencies(numbers, base=None):
 
 def expand(var):
     return os.environ.get(var[1:]) if var.startswith("$") else var
+
+
+def test(cmd, config):
+    cmd = cmd.split()
+    test_run(cmd, config.repetitions, stdout=subprocess.DEVNULL)
+
+
+def test_all(config):
+    for benchmark in config.benchmarks:
+        for runtime in config.runtimes:
+            test(os.path.join(runtime, benchmark), config)
 
 
 def run(cmd, config):
@@ -141,9 +153,21 @@ def diff(cmds, func, unit, color=True):
 
 def main():
     parser = argparse.ArgumentParser()
+    tst_group = parser.add_mutually_exclusive_group()
     run_group = parser.add_mutually_exclusive_group()
     rep_group = parser.add_mutually_exclusive_group()
     fun_group = parser.add_mutually_exclusive_group()
+
+    tst_group.add_argument("--test",
+                           metavar="CMD",
+                           nargs="+",
+                           help="test benchmarks (discards stdout)",
+                           required=False)
+
+    tst_group.add_argument("--test-all",
+                           action="store_true",
+                           help="test all benchmarks (discards stdout)",
+                           required=False)
 
     run_group.add_argument("--run",
                            metavar="CMD",
@@ -202,6 +226,12 @@ def main():
         parser.error("argument -o/--output requires --plot")
 
     config = Config("bench.cfg")
+
+    if args.test:
+        for cmd in args.test:
+            test(cmd, config)
+    elif args.test_all:
+        test_all(config)
 
     if args.run:
         for cmd in args.run:
