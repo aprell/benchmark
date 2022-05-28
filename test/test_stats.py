@@ -1,6 +1,6 @@
 from pytest import approx
 from random import shuffle
-from src.stats import summarize
+from bench.stats import summarize
 
 
 def test_summarize_0():

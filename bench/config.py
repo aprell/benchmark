@@ -1,6 +1,6 @@
 import configparser
 
-from .utils import read_list
+from bench.utils import read_list
 
 
 class Config:

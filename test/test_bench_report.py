@@ -1,4 +1,4 @@
-from src.main import report, speedups, efficiencies
+from bench.main import report, speedups, efficiencies
 
 
 def test_report_run_time_a(capfd):

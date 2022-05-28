@@ -1,4 +1,4 @@
-from src.config import Config
+from bench.config import Config
 
 
 def test_config_01():

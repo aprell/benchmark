@@ -10,6 +10,6 @@ setup(
     description = "Benchmark Utilities",
     packages = find_packages(),
     entry_points = {
-        "console_scripts": ["bench=bench:main"]
+        "console_scripts": ["bench=bench.main:main"]
     },
 )

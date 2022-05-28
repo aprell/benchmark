@@ -8,10 +8,10 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
-from src.config import Config
-from src.stats import headers, print_csv, print_table, summarize
-from src.utils import eprint, get_logfile, get_logfiles, get_run_times, run as do_run
-from src.utils import GREEN as GOOD, RED as BAD, RESET
+from bench.config import Config
+from bench.stats import headers, print_csv, print_table, summarize
+from bench.utils import eprint, get_logfile, get_logfiles, get_run_times, run as do_run
+from bench.utils import GREEN as GOOD, RED as BAD, RESET
 
 
 def transform(func):

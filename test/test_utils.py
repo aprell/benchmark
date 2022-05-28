@@ -1,5 +1,5 @@
 from pytest import raises
-from src.utils import get_logfile, get_logfiles, get_run_times, read_list
+from bench.utils import get_logfile, get_logfiles, get_run_times, read_list
 
 
 def test_get_logfile():
