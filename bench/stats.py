@@ -110,21 +110,30 @@ def print_stats(numbers, tabulate=True):
     print_table(stats) if tabulate else print_csv(stats)
 
 
+def read_stats(csv_file):
+    with open(csv_file, "r") as file:
+        stats = []
+        for line in file:
+            stats.append(line.strip().split(","))
+    return stats
+
+
+def write_stats(cmd, csv_file):
+    with open(csv_file, "w") as file:
+        stats = [["#Threads"] + headers]
+        for n, logfile in get_logfiles(cmd, ext="log"):
+            stats.append([n] + summarize(get_run_times(logfile)))
+        print_csv(stats, file=file)
+    return stats
+
+
 def get_stats(cmd):
     cmd = cmd.split()
     csv_file = get_logfile(cmd, ext="csv")
     if not os.path.exists(csv_file):
-        with open(csv_file, "w") as file:
-            stats = [["#Threads"] + headers]
-            for n, logfile in get_logfiles(cmd, ext="log"):
-                stats.append([n] + summarize(get_run_times(logfile)))
-            print_csv(stats, file=file)
+        return write_stats(cmd, csv_file)
     else:
-        with open(csv_file, "r") as file:
-            stats = []
-            for line in file:
-                stats.append(line.strip().split(","))
-    return stats
+        return read_stats(csv_file)
 
 
 if __name__ == "__main__":

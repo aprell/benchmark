@@ -1,5 +1,7 @@
-from pytest import approx
 from random import shuffle
+
+from pytest import approx
+
 from bench.stats import summarize
 
 

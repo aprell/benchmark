@@ -1,4 +1,5 @@
 from pytest import raises
+
 from bench.utils import get_logfile, get_logfiles, get_run_times, read_list
 
 
