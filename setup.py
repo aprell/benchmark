@@ -9,6 +9,10 @@ setup(
     author_email = "andreas.h.prell@gmail.com",
     description = "Benchmark Utilities",
     packages = find_packages(),
+    install_requires = [
+        "matplotlib",
+        "tabulate"
+    ],
     entry_points = {
         "console_scripts": ["bench=bench.main:main"]
     },
