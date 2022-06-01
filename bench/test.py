@@ -11,5 +11,4 @@ def test(cmd, config):
 
 def test_all(config):
     for benchmark in config.benchmarks:
-        for runtime in config.runtimes:
-            test(os.path.join(runtime, benchmark), config)
+        test(benchmark, config)

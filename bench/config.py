@@ -9,7 +9,6 @@ class Config:
         self.config.read(configfile)
 
         self.benchmarks = read_list(self.config.get("Benchmark", "benchmarks", fallback=[]))
-        self.runtimes = read_list(self.config.get("Benchmark", "runtimes", fallback=[]))
         self.num_threads = read_list(self.config.get("Benchmark", "num_threads", fallback=[1]), elem=int)
         self.repetitions = self.config.getint("Benchmark", "repetitions", fallback=10)
 
@@ -21,7 +20,6 @@ class Config:
     def print(self):
         print("[Benchmark]")
         print("benchmarks =", self.benchmarks)
-        print("runtimes =", self.runtimes)
         print("num_threads =", self.num_threads)
         print("repetitions =", self.repetitions)
         print("\n[Environment]")

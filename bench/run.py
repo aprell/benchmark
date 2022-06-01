@@ -25,5 +25,4 @@ def run(cmd, config):
 
 def run_all(config):
     for benchmark in config.benchmarks:
-        for runtime in config.runtimes:
-            run(os.path.join(runtime, benchmark), config)
+        run(benchmark, config)

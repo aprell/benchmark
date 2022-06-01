@@ -13,5 +13,4 @@ def report(cmd, transform=None, tabulate=True):
 
 def report_all(config, transform=None, tabulate=True):
     for benchmark in config.benchmarks:
-        for runtime in config.runtimes:
-            report(os.path.join(runtime, benchmark), transform, tabulate)
+        report(benchmark, transform, tabulate)
