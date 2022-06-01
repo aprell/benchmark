@@ -90,7 +90,7 @@ def parse_args():
 
 def main():
     args = parse_args()
-    config = Config("bench.cfg")
+    config = Config("bench.ini")
 
     if args.test:
         for cmd in args.test:

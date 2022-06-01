@@ -2,7 +2,7 @@ from bench.config import Config
 
 
 def test_config_01():
-    config = Config("config.input/01.cfg")
+    config = Config("config.input/01.ini")
     assert config.benchmarks == []
     assert config.num_threads == [1]
     assert config.repetitions == 10
@@ -10,7 +10,7 @@ def test_config_01():
 
 
 def test_config_02():
-    config = Config("config.input/02.cfg")
+    config = Config("config.input/02.ini")
     assert config.benchmarks == []
     assert config.num_threads == [1, 2, 4, 8, 16]
     assert config.repetitions == 10
@@ -20,7 +20,7 @@ def test_config_02():
 
 
 def test_config_03():
-    config = Config("config.input/03.cfg")
+    config = Config("config.input/03.ini")
     assert config.benchmarks == ["x", "y", "z"]
     assert config.num_threads == [1, 2, 4, 8, 16]
     assert config.repetitions == 5
