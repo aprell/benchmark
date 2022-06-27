@@ -63,10 +63,10 @@ def get_logfiles(cmd, ext=None):
     return [(get_num_threads(logfile), logfile) for logfile in sorted(logfiles)]
 
 
-def get_run_times(logfile):
+def get_run_times(logfile, pattern=r"[^:]*"):
     run_times = []
     with open(logfile) as file:
-        elapsed = re.compile(r"[^:]*: *(\d+(?:\.\d*)?)")
+        elapsed = re.compile(pattern.strip('"') + r": *(\d+(?:\.\d*)?)")
         for line in file:
             match = re.search(elapsed, line)
             if match:

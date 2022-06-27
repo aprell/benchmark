@@ -1,12 +1,13 @@
+from bench.config import Config
 from bench.metrics import efficiencies, speedups
 from bench.report import report
 
 
 def test_report_run_time_a(capfd):
-    report("a/y 30 10")
+    report("a/y 30 10", Config())
     assert capfd.readouterr().out == \
 """
- a/y 30 10
+ a/y 30 10 (ms)
 +----------+----------+---------+---------+----------+----------+---------+---------+---------+---------+---------+-------------------+
 | #Threads |   Min    |   P10   |   P25   |  Median  |   P75    |   P90   |   Max   | P75-P25 | P90-P10 | Max-Min |    Mean ± RSD     |
 +----------+----------+---------+---------+----------+----------+---------+---------+---------+---------+---------+-------------------+
@@ -20,10 +21,10 @@ def test_report_run_time_a(capfd):
 
 
 def test_report_speedup_a(capfd):
-    report("a/y 30 10", speedups)
+    report("a/y 30 10", Config(), speedups)
     assert capfd.readouterr().out == \
 """
- a/y 30 10
+ a/y 30 10 (ms)
 +----------+------+------+------+--------+------+------+------+
 | #Threads | Min  | P10  | P25  | Median | P75  | P90  | Max  |
 +----------+------+------+------+--------+------+------+------+
@@ -37,10 +38,10 @@ def test_report_speedup_a(capfd):
 
 
 def test_report_efficiency_a(capfd):
-    report("a/y 30 10", efficiencies)
+    report("a/y 30 10", Config(), efficiencies)
     assert capfd.readouterr().out == \
 """
- a/y 30 10
+ a/y 30 10 (ms)
 +----------+------+------+------+--------+------+------+------+
 | #Threads | Min  | P10  | P25  | Median | P75  | P90  | Max  |
 +----------+------+------+------+--------+------+------+------+
@@ -54,10 +55,10 @@ def test_report_efficiency_a(capfd):
 
 
 def test_report_run_time_b(capfd):
-    report("b/y 30 10")
+    report("b/y 30 10", Config())
     assert capfd.readouterr().out == \
 """
- b/y 30 10
+ b/y 30 10 (ms)
 +----------+---------+----------+----------+---------+----------+----------+----------+---------+---------+---------+-------------------+
 | #Threads |   Min   |   P10    |   P25    | Median  |   P75    |   P90    |   Max    | P75-P25 | P90-P10 | Max-Min |    Mean ± RSD     |
 +----------+---------+----------+----------+---------+----------+----------+----------+---------+---------+---------+-------------------+
@@ -71,10 +72,10 @@ def test_report_run_time_b(capfd):
 
 
 def test_report_speedup_b(capfd):
-    report("b/y 30 10", speedups)
+    report("b/y 30 10", Config(), speedups)
     assert capfd.readouterr().out == \
 """
- b/y 30 10
+ b/y 30 10 (ms)
 +----------+------+------+------+--------+------+------+------+
 | #Threads | Min  | P10  | P25  | Median | P75  | P90  | Max  |
 +----------+------+------+------+--------+------+------+------+
@@ -88,10 +89,10 @@ def test_report_speedup_b(capfd):
 
 
 def test_report_efficiency_b(capfd):
-    report("b/y 30 10", efficiencies)
+    report("b/y 30 10", Config(), efficiencies)
     assert capfd.readouterr().out == \
 """
- b/y 30 10
+ b/y 30 10 (ms)
 +----------+------+------+------+--------+------+------+------+
 | #Threads | Min  | P10  | P25  | Median | P75  | P90  | Max  |
 +----------+------+------+------+--------+------+------+------+

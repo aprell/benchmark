@@ -11,19 +11,29 @@ def format_number(n, suffix="", color=True):
         return f"+{n:.2f}{suffix}" if n > 0 else f"{n:.2f}{suffix}"
 
 
-def actual_diff(a, b):
+def __actual_diff(a, b):
     return a - b
 
 
-def relative_diff(a, b):
+def __relative_diff(a, b):
     return (a - b) / b * 100
 
 
-def diff(cmds, func, unit, color=True):
+def actual_diff(cmds, config, color=True):
     def format(n):
-        return format_number(n, suffix=f" {unit}", color=color)
-    a = np.array(get_stats(cmds[0]))
-    b = np.array(get_stats(cmds[1]))
+        return format_number(n, suffix=f" {config.unit}", color=color)
+    diff(cmds, config, func=__actual_diff, format=format)
+
+
+def relative_diff(cmds, config, color=True):
+    def format(n):
+        return format_number(n, suffix=" %", color=color)
+    diff(cmds, config, func=__relative_diff, format=format)
+
+
+def diff(cmds, config, func, format):
+    a = np.array(get_stats(cmds[0], config))
+    b = np.array(get_stats(cmds[1], config))
     d = np.vectorize(format)(func(a[1:,1:-4].astype(float), b[1:,1:-4].astype(float)))
     print("\n", cmds[0], "vs", cmds[1])
     print_table(np.r_[[a[0,:-4]], np.c_[a[1:,0], d]].tolist())

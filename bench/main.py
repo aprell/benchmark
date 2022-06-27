@@ -3,7 +3,7 @@
 import argparse
 
 from bench.config import Config
-from bench.diff import actual_diff, diff, relative_diff
+from bench.diff import actual_diff, relative_diff
 from bench.metrics import efficiencies, speedups
 from bench.plot import plot
 from bench.report import report, report_all
@@ -108,26 +108,26 @@ def main():
 
     if args.report:
         for cmd in args.report:
-            report(cmd, transform=func)
+            report(cmd, config, transform=func)
     elif args.report == [] and args.run:
         for cmd in args.run:
-            report(cmd, transform=func)
+            report(cmd, config, transform=func)
     elif args.report_all:
         report_all(config, transform=func)
 
     if args.plot:
         outfile = args.output if args.output else "plot.png"
         if args.speedup:
-            plot(args.plot, outfile, ylabel="Median speedups", transform=func)
+            plot(args.plot, config, outfile, ylabel="Median speedups", transform=func)
         elif args.efficiency:
-            plot(args.plot, outfile, ylabel="Median efficiencies", transform=func)
+            plot(args.plot, config, outfile, ylabel="Median efficiencies", transform=func)
         else:
             # Median run times
-            plot(args.plot, outfile)
+            plot(args.plot, config, outfile)
 
     if args.diff:
-        diff(args.diff, func=actual_diff, unit="ms")
-        diff(args.diff, func=relative_diff, unit="%")
+        actual_diff(args.diff, config)
+        relative_diff(args.diff, config)
 
 
 if __name__ == "__main__":

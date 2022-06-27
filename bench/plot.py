@@ -6,12 +6,12 @@ import numpy as np
 from bench.stats import get_stats
 
 
-def plot(cmds, outfile, xlabel="Number of threads", ylabel="Median run times (ms)", transform=None):
+def plot(cmds, config, outfile, xlabel="Number of threads", ylabel="Median run times (ms)", transform=None):
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
 
     for cmd in cmds:
-        stats = get_stats(cmd)
+        stats = get_stats(cmd, config)
         if transform:
             stats = transform(stats)
         # Remove column headers

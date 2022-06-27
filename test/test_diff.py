@@ -1,8 +1,9 @@
-from bench.diff import actual_diff, diff, relative_diff
+from bench.config import Config
+from bench.diff import actual_diff, relative_diff
 
 
 def test_actual_diff_a_b(capfd):
-    diff(["a/y 30 10", "b/y 30 10"], actual_diff, unit="ms", color=False)
+    actual_diff(["a/y 30 10", "b/y 30 10"], Config(), color=False)
     assert capfd.readouterr().out == \
 """
  a/y 30 10 vs b/y 30 10
@@ -19,7 +20,7 @@ def test_actual_diff_a_b(capfd):
 
 
 def test_actual_diff_b_a(capfd):
-    diff(["b/y 30 10", "a/y 30 10"], actual_diff, unit="ms", color=False)
+    actual_diff(["b/y 30 10", "a/y 30 10"], Config(), color=False)
     assert capfd.readouterr().out == \
 """
  b/y 30 10 vs a/y 30 10
@@ -36,7 +37,7 @@ def test_actual_diff_b_a(capfd):
 
 
 def test_relative_diff_a_b(capfd):
-    diff(["a/y 30 10", "b/y 30 10"], relative_diff, unit="%", color=False)
+    relative_diff(["a/y 30 10", "b/y 30 10"], Config(), color=False)
     assert capfd.readouterr().out == \
 """
  a/y 30 10 vs b/y 30 10
@@ -53,7 +54,7 @@ def test_relative_diff_a_b(capfd):
 
 
 def test_relative_diff_b_a(capfd):
-    diff(["b/y 30 10", "a/y 30 10"], relative_diff, unit="%", color=False)
+    relative_diff(["b/y 30 10", "a/y 30 10"], Config(), color=False)
     assert capfd.readouterr().out == \
 """
  b/y 30 10 vs a/y 30 10
