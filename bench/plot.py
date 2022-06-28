@@ -6,7 +6,7 @@ import numpy as np
 from bench.stats import get_stats
 
 
-def plot(cmds, config, outfile, xlabel="Number of threads", ylabel="Median run times (ms)", transform=None):
+def plot(cmds, config, outfile, ylabel, xlabel="Number of threads", transform=None):
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
 

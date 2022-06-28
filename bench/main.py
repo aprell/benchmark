@@ -122,8 +122,7 @@ def main():
         elif args.efficiency:
             plot(args.plot, config, outfile, ylabel="Median efficiencies", transform=func)
         else:
-            # Median run times
-            plot(args.plot, config, outfile)
+            plot(args.plot, config, outfile, ylabel=f"Median run times ({config.unit})")
 
     if args.diff:
         actual_diff(args.diff, config)
