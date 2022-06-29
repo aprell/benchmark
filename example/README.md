@@ -1,12 +1,30 @@
+## Setup
+
 ```console
 $ make CC=clang
 clang -Wall -Wextra -fopenmp -O0 matmul.c -o O0/matmul
 clang -Wall -Wextra -fopenmp -O1 matmul.c -o O1/matmul
 clang -Wall -Wextra -fopenmp -O2 matmul.c -o O2/matmul
+
+$ cat bench.ini
+[Benchmark]
+benchmarks = O0/matmul, O1/matmul, O2/matmul
+num_threads = 1, 2, 4, 8
+repetitions = 3
+
+[Time]
+unit = s
+
+[Environment]
+OMP_PLACES = cores
+OMP_PROC_BIND = close
+OMP_NUM_THREADS = $NUM_THREADS
 ```
 
+## bench --run|--run-all
+
 ```console
-$ bench --run-all --report-all
+$ bench --run-all
 NUM_THREADS=1 O0/matmul: ...
 NUM_THREADS=2 O0/matmul: ...
 NUM_THREADS=4 O0/matmul: ...
@@ -19,6 +37,12 @@ NUM_THREADS=1 O2/matmul: ...
 NUM_THREADS=2 O2/matmul: ...
 NUM_THREADS=4 O2/matmul: ...
 NUM_THREADS=8 O2/matmul: ...
+```
+
+## bench --report|--report-all
+
+```console
+$ bench --report-all
 
  O0/matmul (s)
 +----------+------+------+------+--------+------+------+------+---------+---------+---------+---------------+
@@ -50,6 +74,8 @@ NUM_THREADS=8 O2/matmul: ...
 |    8     | 0.08 | 0.08 | 0.08 |  0.08  | 0.08 | 0.08 | 0.08 |   0.0   |   0.0   |   0.0   | 0.08 ± 0.0 %  |
 +----------+------+------+------+--------+------+------+------+---------+---------+---------+---------------+
 ```
+
+## bench --diff
 
 ```console
 $ bench --diff {O1,O0}/matmul
@@ -96,6 +122,8 @@ $ bench --diff {O2,O1}/matmul
 |    8     | -52.94 % | -52.94 % | -52.94 % | -52.94 % | -52.94 % | -52.94 % | -52.94 % |
 +----------+----------+----------+----------+----------+----------+----------+----------+
 ```
+
+## bench --plot
 
 ```console
 $ bench --plot {O0,O1,O2}/matmul
