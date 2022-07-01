@@ -80,10 +80,26 @@ def parse_args():
                         help="show difference between two benchmark results",
                         required=False)
 
+    parser.add_argument("--actual",
+                        action="store_true",
+                        help="show actual difference",
+                        required=False)
+
+    parser.add_argument("--relative",
+                        action="store_true",
+                        help="show relative difference in percent",
+                        required=False)
+
     args = parser.parse_args()
 
     if args.output and not args.plot:
         parser.error("argument -o/--output requires --plot")
+
+    if args.actual and not args.diff:
+        parser.error("argument --actual requires --diff")
+
+    if args.relative and not args.diff:
+        parser.error("argument --relative requires --diff")
 
     return args
 
@@ -125,8 +141,13 @@ def main():
             plot(args.plot, config, outfile, ylabel=f"Median run times ({config.unit})")
 
     if args.diff:
-        actual_diff(args.diff, config)
-        relative_diff(args.diff, config)
+        if args.actual and not args.relative:
+            actual_diff(args.diff, config)
+        elif args.relative and not args.actual:
+            relative_diff(args.diff, config)
+        else:
+            actual_diff(args.diff, config)
+            relative_diff(args.diff, config)
 
 
 if __name__ == "__main__":
