@@ -124,16 +124,13 @@ def write_stats(cmd, config, csv_file):
         for n, logfile in get_logfiles(cmd, ext="log"):
             stats.append([n] + summarize(get_run_times(logfile, config.match)))
         print_csv(stats, file=file)
-    return stats
-
 
 def get_stats(cmd, config):
     cmd = cmd.split()
     csv_file = get_logfile(cmd, ext="csv")
     if not os.path.exists(csv_file):
-        return write_stats(cmd, config, csv_file)
-    else:
-        return read_stats(csv_file)
+        write_stats(cmd, config, csv_file)
+    return read_stats(csv_file)
 
 
 if __name__ == "__main__":
