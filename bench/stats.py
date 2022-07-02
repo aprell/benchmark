@@ -17,7 +17,7 @@ def mean_rsd(numbers):
     else:
         mean = statistics.mean(numbers)
     try:
-        sd = statistics.stdev(numbers)
+        sd = statistics.stdev(numbers, mean)
         rsd = 100 * sd / abs(mean)
     except statistics.StatisticsError:
         # Variance requires at least two data points
@@ -124,6 +124,7 @@ def write_stats(cmd, config, csv_file):
         for n, logfile in get_logfiles(cmd, ext="log"):
             stats.append([n] + summarize(get_run_times(logfile, config.match)))
         print_csv(stats, file=file)
+
 
 def get_stats(cmd, config):
     cmd = cmd.split()
