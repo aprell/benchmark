@@ -1,5 +1,6 @@
 import os
 
+from bench.args import common
 from bench.utils import eprint, get_logfile, run as bench_run
 
 
@@ -21,3 +22,16 @@ def run(cmd, config):
     csv_file = get_logfile(cmd, ext="csv")
     if os.path.exists(csv_file):
         os.remove(csv_file)
+
+
+def setup(subparsers):
+    parser = subparsers.add_parser("run", help="run benchmarks")
+    parser.add_argument("cmds", metavar="CMD", nargs="*")
+    parser.add_argument("--all", **common["--all"])
+
+    parser.set_defaults(run=main)
+
+
+def main(args, config):
+    for cmd in args.all and config.benchmarks or args.cmds:
+        run(cmd, config)

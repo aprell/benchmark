@@ -3,6 +3,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 
+from bench.args import common
 from bench.stats import get_stats
 
 
@@ -29,3 +30,26 @@ def plot(cmds, config, outfile, ylabel, xlabel="Number of threads", transform=No
 
     plt.legend()
     plt.savefig(outfile)
+
+
+def setup(subparsers):
+    parser = subparsers.add_parser("plot", help="plot benchmark results")
+    parser.add_argument("cmds", metavar="CMD", nargs="+")
+    parser.add_argument("-o", "--output", metavar="FILE", help="save figure as file", required=False)
+
+    metrics = parser.add_mutually_exclusive_group()
+    metrics.add_argument("--speedup", **common["--speedup"])
+    metrics.add_argument("--efficiency", **common["--efficiency"])
+
+    parser.set_defaults(run=main)
+
+
+def main(args, config):
+    outfile = args.output if args.output else "plot.png"
+    metric = args.speedup or args.efficiency
+    if args.speedup:
+        plot(args.cmds, config, outfile, ylabel="Median speedups", transform=metric)
+    elif args.efficiency:
+        plot(args.cmds, config, outfile, ylabel="Median efficiencies", transform=metric)
+    else:
+        plot(args.cmds, config, outfile, ylabel=f"Median run times ({config.unit})")

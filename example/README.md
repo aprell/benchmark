@@ -21,10 +21,10 @@ OMP_PROC_BIND = close
 OMP_NUM_THREADS = $NUM_THREADS
 ```
 
-## bench --run
+## bench run
 
 ```console
-$ bench --run --all
+$ bench run --all
 NUM_THREADS=1 O0/matmul: ...
 NUM_THREADS=2 O0/matmul: ...
 NUM_THREADS=4 O0/matmul: ...
@@ -39,10 +39,10 @@ NUM_THREADS=4 O2/matmul: ...
 NUM_THREADS=8 O2/matmul: ...
 ```
 
-## bench --report
+## bench report
 
 ```console
-$ bench --report --all
+$ bench report --all
 
  O0/matmul (s)
 +----------+------+------+------+--------+------+------+------+---------+---------+---------+---------------+
@@ -75,10 +75,10 @@ $ bench --report --all
 +----------+------+------+------+--------+------+------+------+---------+---------+---------+---------------+
 ```
 
-## bench --diff
+## bench diff
 
 ```console
-$ bench --diff {O1,O0}/matmul
+$ bench diff {O1,O0}/matmul
 
  O1/matmul vs O0/matmul
 +----------+---------+---------+---------+---------+---------+---------+---------+
@@ -100,7 +100,7 @@ $ bench --diff {O1,O0}/matmul
 |    8     | -82.65 % | -82.83 % | -83.00 % | -83.33 % | -83.50 % | -83.65 % | -83.65 % |
 +----------+----------+----------+----------+----------+----------+----------+----------+
 
-$ bench --diff {O2,O1}/matmul
+$ bench diff {O2,O1}/matmul
 
  O2/matmul vs O1/matmul
 +----------+---------+---------+---------+---------+---------+---------+---------+
@@ -123,9 +123,9 @@ $ bench --diff {O2,O1}/matmul
 +----------+----------+----------+----------+----------+----------+----------+----------+
 ```
 
-## bench --plot
+## bench plot
 
 ```console
-$ bench --plot {O0,O1,O2}/matmul
+$ bench plot {O0,O1,O2}/matmul
 # See plot.png
 ```

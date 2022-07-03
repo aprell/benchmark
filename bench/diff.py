@@ -37,3 +37,22 @@ def diff(cmds, config, func, format):
     d = np.vectorize(format)(func(a[1:,1:-4].astype(float), b[1:,1:-4].astype(float)))
     print("\n", cmds[0], "vs", cmds[1])
     print_table(np.r_[[a[0,:-4]], np.c_[a[1:,0], d]].tolist())
+
+
+def setup(subparsers):
+    parser = subparsers.add_parser("diff", help="show difference between two benchmark results")
+    parser.add_argument("cmds", metavar="CMD", nargs=2)
+    parser.add_argument("--actual", action="store_true", help="show actual difference", required=False)
+    parser.add_argument("--relative", action="store_true", help="show relative difference in percent", required=False)
+
+    parser.set_defaults(run=main)
+
+
+def main(args, config):
+    if args.actual and not args.relative:
+        actual_diff(args.cmds, config)
+    elif args.relative and not args.actual:
+        relative_diff(args.cmds, config)
+    else:
+        actual_diff(args.cmds, config)
+        relative_diff(args.cmds, config)
