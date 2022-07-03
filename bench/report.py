@@ -9,8 +9,3 @@ def report(cmd, config, transform=None, tabulate=True):
     if transform:
         stats = transform(stats)
     print_table(stats) if tabulate else print_csv(stats)
-
-
-def report_all(config, transform=None, tabulate=True):
-    for benchmark in config.benchmarks:
-        report(benchmark, config, transform, tabulate)

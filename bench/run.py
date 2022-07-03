@@ -21,8 +21,3 @@ def run(cmd, config):
     csv_file = get_logfile(cmd, ext="csv")
     if os.path.exists(csv_file):
         os.remove(csv_file)
-
-
-def run_all(config):
-    for benchmark in config.benchmarks:
-        run(benchmark, config)

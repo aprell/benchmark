@@ -6,9 +6,9 @@ from bench.config import Config
 from bench.diff import actual_diff, relative_diff
 from bench.metrics import efficiencies, speedups
 from bench.plot import plot
-from bench.report import report, report_all
-from bench.run import run, run_all
-from bench.test import test, test_all
+from bench.report import report
+from bench.run import run
+from bench.test import test
 
 
 def parse_args():
@@ -97,28 +97,18 @@ def main():
     config = Config("bench.ini")
 
     if args.test or args.test == []:
-        if args.all:
-            test_all(config)
-        else:
-            for cmd in args.test:
-                test(cmd, config)
+        for cmd in args.all and config.benchmarks or args.test:
+            test(cmd, config)
 
     if args.run or args.run == []:
-        if args.all:
-            run_all(config)
-        else:
-            for cmd in args.run:
-                run(cmd, config)
+        for cmd in args.all and config.benchmarks or args.run:
+            run(cmd, config)
 
     metric = args.speedup or args.efficiency
 
     if args.report or args.report == []:
-        if args.all:
-            report_all(config, transform=metric)
-        else:
-            assert args.report or args.run
-            for cmd in args.report or args.run:
-                report(cmd, config, transform=metric)
+        for cmd in args.all and config.benchmarks or args.report or args.run:
+            report(cmd, config, transform=metric)
 
     if args.diff:
         if args.actual and not args.relative:
