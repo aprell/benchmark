@@ -13,57 +13,29 @@ from bench.test import test, test_all
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    groups = [
-        parser.add_mutually_exclusive_group(),
-        parser.add_mutually_exclusive_group(),
-        parser.add_mutually_exclusive_group(),
-        parser.add_mutually_exclusive_group(),
-    ]
 
-    groups[0].add_argument("--test",
-                           metavar="CMD",
-                           nargs="+",
-                           help="test benchmarks (discards stdout)",
-                           required=False)
+    parser.add_argument("--test",
+                        metavar="CMD",
+                        nargs="*",
+                        help="test benchmarks (discards stdout)",
+                        required=False)
 
-    groups[0].add_argument("--test-all",
-                           action="store_true",
-                           help="test all benchmarks (discards stdout)",
-                           required=False)
+    parser.add_argument("--run",
+                        metavar="CMD",
+                        nargs="*",
+                        help="run benchmarks",
+                        required=False)
 
-    groups[1].add_argument("--run",
-                           metavar="CMD",
-                           nargs="+",
-                           help="run benchmarks",
-                           required=False)
+    parser.add_argument("--report",
+                        metavar="CMD",
+                        nargs="*",
+                        help="report benchmark results",
+                        required=False)
 
-    groups[1].add_argument("--run-all",
-                           action="store_true",
-                           help="run all benchmarks",
-                           required=False)
-
-    groups[2].add_argument("--report",
-                           metavar="CMD",
-                           nargs="*",
-                           help="report benchmark results",
-                           required=False)
-
-    groups[2].add_argument("--report-all",
-                           action="store_true",
-                           help="report all benchmark results",
-                           required=False)
-
-    groups[3].add_argument("--speedup",
-                           action="store_const",
-                           const=speedups,
-                           help="calculate parallel speedups",
-                           required=False)
-
-    groups[3].add_argument("--efficiency",
-                           action="store_const",
-                           const=efficiencies,
-                           help="calculate parallel efficiencies",
-                           required=False)
+    parser.add_argument("--all",
+                        action="store_true",
+                        help="consider all benchmarks in configuration file",
+                        required=False)
 
     parser.add_argument("--diff",
                         metavar="CMD",
@@ -92,6 +64,20 @@ def parse_args():
                         help="save figure as file",
                         required=False)
 
+    metrics = parser.add_mutually_exclusive_group()
+
+    metrics.add_argument("--speedup",
+                         action="store_const",
+                         const=speedups,
+                         help="calculate parallel speedups",
+                         required=False)
+
+    metrics.add_argument("--efficiency",
+                         action="store_const",
+                         const=efficiencies,
+                         help="calculate parallel efficiencies",
+                         required=False)
+
     args = parser.parse_args()
 
     if args.actual and not args.diff:
@@ -110,28 +96,29 @@ def main():
     args = parse_args()
     config = Config("bench.ini")
 
-    if args.test:
-        for cmd in args.test:
-            test(cmd, config)
-    elif args.test_all:
-        test_all(config)
+    if args.test or args.test == []:
+        if args.all:
+            test_all(config)
+        else:
+            for cmd in args.test:
+                test(cmd, config)
 
-    if args.run:
-        for cmd in args.run:
-            run(cmd, config)
-    elif args.run_all:
-        run_all(config)
+    if args.run or args.run == []:
+        if args.all:
+            run_all(config)
+        else:
+            for cmd in args.run:
+                run(cmd, config)
 
     metric = args.speedup or args.efficiency
 
-    if args.report:
-        for cmd in args.report:
-            report(cmd, config, transform=metric)
-    elif args.report == [] and args.run:
-        for cmd in args.run:
-            report(cmd, config, transform=metric)
-    elif args.report_all:
-        report_all(config, transform=metric)
+    if args.report or args.report == []:
+        if args.all:
+            report_all(config, transform=metric)
+        else:
+            assert args.report or args.run
+            for cmd in args.report or args.run:
+                report(cmd, config, transform=metric)
 
     if args.diff:
         if args.actual and not args.relative:

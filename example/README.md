@@ -21,10 +21,10 @@ OMP_PROC_BIND = close
 OMP_NUM_THREADS = $NUM_THREADS
 ```
 
-## bench --run|--run-all
+## bench --run
 
 ```console
-$ bench --run-all
+$ bench --run --all
 NUM_THREADS=1 O0/matmul: ...
 NUM_THREADS=2 O0/matmul: ...
 NUM_THREADS=4 O0/matmul: ...
@@ -39,10 +39,10 @@ NUM_THREADS=4 O2/matmul: ...
 NUM_THREADS=8 O2/matmul: ...
 ```
 
-## bench --report|--report-all
+## bench --report
 
 ```console
-$ bench --report-all
+$ bench --report --all
 
  O0/matmul (s)
 +----------+------+------+------+--------+------+------+------+---------+---------+---------+---------------+
