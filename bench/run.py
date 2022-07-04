@@ -1,6 +1,6 @@
 import os
 
-from bench.args import common
+from bench.args import add_argument
 from bench.utils import eprint, get_logfile, run as bench_run
 
 
@@ -27,7 +27,7 @@ def run(cmd, config):
 def setup(subparsers):
     parser = subparsers.add_parser("run", help="run benchmarks")
     parser.add_argument("cmds", metavar="CMD", nargs="*")
-    parser.add_argument("--all", **common["--all"])
+    add_argument(parser, "--all")
 
     parser.set_defaults(run=main)
 

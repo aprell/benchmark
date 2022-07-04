@@ -3,7 +3,7 @@ import argparse
 from bench.metrics import efficiencies, speedups
 
 
-common = {
+options = {
     "--all": {
         "action": "store_true",
         "help": "consider all benchmarks in configuration file",
@@ -23,3 +23,7 @@ common = {
         "required": False,
     }
 }
+
+
+def add_argument(parser, option):
+    parser.add_argument(option, **options[option])

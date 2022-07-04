@@ -3,7 +3,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 
-from bench.args import common
+from bench.args import add_argument
 from bench.stats import get_stats
 
 
@@ -38,8 +38,8 @@ def setup(subparsers):
     parser.add_argument("-o", "--output", metavar="FILE", help="save figure as file", required=False)
 
     metrics = parser.add_mutually_exclusive_group()
-    metrics.add_argument("--speedup", **common["--speedup"])
-    metrics.add_argument("--efficiency", **common["--efficiency"])
+    add_argument(metrics, "--speedup")
+    add_argument(metrics, "--efficiency")
 
     parser.set_defaults(run=main)
 

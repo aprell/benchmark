@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-from bench.args import common
+from bench.args import add_argument
 from bench.utils import run as test_run
 
 
@@ -13,7 +13,7 @@ def test(cmd, config):
 def setup(subparsers):
     parser = subparsers.add_parser("test", help="test benchmarks (discards stdout)")
     parser.add_argument("cmds", metavar="CMD", nargs="*")
-    parser.add_argument("--all", **common["--all"])
+    add_argument(parser, "--all")
 
     parser.set_defaults(run=main)
 

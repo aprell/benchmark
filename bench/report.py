@@ -1,6 +1,6 @@
 import os
 
-from bench.args import common
+from bench.args import add_argument
 from bench.stats import get_stats, print_csv, print_table
 
 
@@ -15,11 +15,11 @@ def report(cmd, config, transform=None, tabulate=True):
 def setup(subparsers):
     parser = subparsers.add_parser("report", help="report benchmark results")
     parser.add_argument("cmds", metavar="CMD", nargs="*")
-    parser.add_argument("--all", **common["--all"])
+    add_argument(parser, "--all")
 
     metrics = parser.add_mutually_exclusive_group()
-    metrics.add_argument("--speedup", **common["--speedup"])
-    metrics.add_argument("--efficiency", **common["--efficiency"])
+    add_argument(metrics, "--speedup")
+    add_argument(metrics, "--efficiency")
 
     parser.set_defaults(run=main)
 
