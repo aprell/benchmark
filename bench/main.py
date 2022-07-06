@@ -9,11 +9,8 @@ def main():
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()
 
-    test.setup(subparsers)
-    run.setup(subparsers)
-    report.setup(subparsers)
-    diff.setup(subparsers)
-    plot.setup(subparsers)
+    for cmd in [test, run, report, diff, plot]:
+        cmd.setup(subparsers)
 
     args = parser.parse_args()
     args.run(args, config.Config("bench.ini"))
