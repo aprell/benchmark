@@ -4,11 +4,7 @@
 #include <omp.h>
 
 // Matrices are N x N
-#ifdef DIM
-static int N = DIM;
-#else
-static int N = 1000;
-#endif
+static int N;
 
 static double **A, **B, **C;
 
@@ -45,9 +41,7 @@ static void multiply(double **A, double **B, double **C) {
 int main(int argc, char *argv[]) {
     int i, j;
 
-    if (argc > 1) {
-        N = atoi(argv[1]);
-    }
+    N = (argc > 1) ? atoi(argv[1]) : 1000;
 
     A = malloc_matrix(N, N);
     B = malloc_matrix(N, N);
