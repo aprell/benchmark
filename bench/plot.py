@@ -1,5 +1,3 @@
-import os
-
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -26,7 +24,7 @@ def plot(cmds, config, outfile, ylabel, xlabel="Number of threads", transform=No
         plt.errorbar(num_threads,
                      median_values,
                      yerr=[lower_errors, upper_errors],
-                     label=os.path.dirname(cmd).upper())
+                     label=cmd.strip("./"))
 
     plt.legend()
     plt.savefig(outfile)
