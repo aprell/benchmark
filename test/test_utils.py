@@ -5,21 +5,21 @@ from bench.utils import get_logfile, get_logfiles, get_run_times, read_list
 
 def test_get_logfile():
     assert get_logfile(["x"]) == "benchmark.output/x"
-    assert get_logfile(["./x"]) == "benchmark.output/./x"
+    assert get_logfile(["./x"]) == "benchmark.output/x"
     assert get_logfile(["a/b/c/x"]) == "benchmark.output/a/b/c/x"
     assert get_logfile(["a/b/c/x", "1", "2", "3"]) == "benchmark.output/a/b/c/x_1_2_3"
 
 
 def test_get_logfile_with_suffix():
     assert get_logfile(["x"], suffix=1) == "benchmark.output/x_001"
-    assert get_logfile(["./x"], suffix=2) == "benchmark.output/./x_002"
+    assert get_logfile(["./x"], suffix=2) == "benchmark.output/x_002"
     assert get_logfile(["a/b/c/x"], suffix=3) == "benchmark.output/a/b/c/x_003"
     assert get_logfile(["a/b/c/x", "1", "2", "3"], suffix="4") ==  "benchmark.output/a/b/c/x_1_2_3_4"
 
 
 def test_get_logfile_with_ext():
     assert get_logfile(["x"], ext="csv") == "benchmark.output/x.csv"
-    assert get_logfile(["./x"], ext="log") == "benchmark.output/./x.log"
+    assert get_logfile(["./x"], ext="log") == "benchmark.output/x.log"
     assert get_logfile(["a/b/c/x"], ext="out") == "benchmark.output/a/b/c/x.out"
     assert get_logfile(["a/b/c/x", "1", "2", "3"], ext="zip") == "benchmark.output/a/b/c/x_1_2_3.zip"
 

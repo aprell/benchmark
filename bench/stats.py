@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
 import argparse
-import os
 import statistics
 import sys
+
+from pathlib import Path
 
 from bench.utils import get_logfile, get_logfiles, get_run_times
 
@@ -129,7 +130,7 @@ def write_stats(cmd, config, csv_file):
 def get_stats(cmd, config):
     cmd = cmd.split()
     csv_file = get_logfile(cmd, ext="csv")
-    if not os.path.exists(csv_file):
+    if not Path(csv_file).exists():
         write_stats(cmd, config, csv_file)
     return read_stats(csv_file)
 

@@ -4,6 +4,8 @@ import re
 import subprocess
 import sys
 
+from pathlib import Path
+
 
 RESET = "\033[0m"
 BOLD = "\033[1m"
@@ -39,8 +41,8 @@ def get_num_threads(env):
 
 
 def get_logfile(cmd, suffix=None, ext=None):
-    logdir = os.path.join("benchmark.output", os.path.dirname(cmd[0]))
-    logfile = os.path.join(logdir, os.path.basename(cmd[0]))
+    logdir = Path("benchmark.output") / Path(cmd[0]).parent
+    logfile = str(logdir / Path(cmd[0]).stem)
     if len(cmd) > 1:
         logfile += "_" + "_".join(cmd[1:])
     if suffix:
@@ -55,7 +57,7 @@ def get_logfile(cmd, suffix=None, ext=None):
 
 def get_logfiles(cmd, ext=None):
     def get_num_threads(logfile):
-        return int(os.path.splitext(logfile)[0][-3:])
+        return int(Path(logfile).stem[-3:])
     pattern = get_logfile(cmd) + "*"
     if ext:
         pattern += f".{ext}"
