@@ -10,8 +10,8 @@ def run(cmd, config):
     cmd = cmd.split()
 
     for n in config.num_threads:
-        logfile = Path(get_logfile(cmd, suffix=n, ext="log"))
-        Path.mkdir(logfile.parent, exist_ok=True)
+        logfile = get_logfile(cmd, suffix=n, ext="log")
+        Path(logfile).parent.mkdir(exist_ok=True)
 
         with open(logfile, "w") as file:
             os.environ.update({
@@ -21,9 +21,9 @@ def run(cmd, config):
             eprint(f"NUM_THREADS={n} ", end='')
             bench_run(cmd, config.repetitions, stdout=file)
 
-    csv_file = Path(get_logfile(cmd, ext="csv"))
-    if csv_file.exists():
-        csv_file.unlink()
+    csv_file = get_logfile(cmd, ext="csv")
+    if Path(csv_file).exists():
+        Path(csv_file).unlink()
 
 
 def setup(subparsers):

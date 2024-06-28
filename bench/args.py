@@ -1,5 +1,3 @@
-import argparse
-
 from bench.metrics import efficiencies, speedups
 
 

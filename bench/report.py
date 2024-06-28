@@ -1,5 +1,3 @@
-import os
-
 from bench.args import add_argument
 from bench.stats import get_stats, print_csv, print_table
 

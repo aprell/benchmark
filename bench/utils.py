@@ -41,7 +41,7 @@ def get_num_threads(env):
 
 
 def get_logfile(cmd, suffix=None, ext=None):
-    logdir = Path("benchmark.output") / Path(cmd[0]).parent
+    logdir = "benchmark.output" / Path(cmd[0]).parent
     logfile = str(logdir / Path(cmd[0]).stem)
     if len(cmd) > 1:
         logfile += "_" + "_".join(cmd[1:])

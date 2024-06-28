@@ -1,4 +1,3 @@
-import os
 import subprocess
 
 from bench.args import add_argument
