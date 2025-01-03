@@ -18,12 +18,12 @@ def eprint(*args, **kwargs):
 
 
 def run(cmd, repetitions=10, stdout=None, stderr=None):
-    eprint(" ".join(cmd) + ": ", end='')
+    eprint(" ".join(cmd) + f": {0:4.0%}", end='')
 
     try:
-        for _ in range(repetitions):
-            eprint(".", end='')
+        for i in range(repetitions):
             subprocess.run(cmd, stdout=stdout, stderr=stderr, check=True)
+            eprint(f"\b\b\b\b{(i+1)/repetitions:4.0%}", end='')
     except subprocess.CalledProcessError:
         eprint(f"\b{BOLD}{RED}X{RESET}", end='')
 
