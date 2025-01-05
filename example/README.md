@@ -126,6 +126,6 @@ $ bench diff {O2,O1}/matmul
 ## bench plot
 
 ```console
-$ bench plot {O0,O1,O2}/matmul
+$ bench plot --all
 # See plot.png
 ```

@@ -32,8 +32,9 @@ def plot(cmds, config, outfile, ylabel, xlabel="Number of threads", transform=No
 
 def setup(subparsers):
     parser = subparsers.add_parser("plot", help="plot benchmark results")
-    parser.add_argument("cmds", metavar="CMD", nargs="+")
+    parser.add_argument("cmds", metavar="CMD", nargs="*")
     parser.add_argument("-o", "--output", metavar="FILE", help="save figure as file", required=False)
+    add_argument(parser, "--all")
 
     metrics = parser.add_mutually_exclusive_group()
     add_argument(metrics, "--speedup")
@@ -43,11 +44,12 @@ def setup(subparsers):
 
 
 def main(args, config):
+    cmds = args.all and config.benchmarks or args.cmds
     outfile = args.output if args.output else "plot.png"
     metric = args.speedup or args.efficiency
     if args.speedup:
-        plot(args.cmds, config, outfile, ylabel="Speedup", transform=metric)
+        plot(cmds, config, outfile, ylabel="Speedup", transform=metric)
     elif args.efficiency:
-        plot(args.cmds, config, outfile, ylabel="Efficiency", transform=metric)
+        plot(cmds, config, outfile, ylabel="Efficiency", transform=metric)
     else:
-        plot(args.cmds, config, outfile, ylabel=f"{config.label}")
+        plot(cmds, config, outfile, ylabel=f"{config.label}")
