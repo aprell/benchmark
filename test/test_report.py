@@ -7,7 +7,7 @@ def test_report_run_time_a(capfd):
     report("a/y 30 10", Config())
     assert capfd.readouterr().out == \
 """
- a/y 30 10 (ms)
+ a/y 30 10 (Run time (ms))
 +----------+----------+---------+---------+----------+----------+---------+---------+---------+---------+---------+-------------------+
 | #Threads |   Min    |   P10   |   P25   |  Median  |   P75    |   P90   |   Max   | P75-P25 | P90-P10 | Max-Min |    Mean ± RSD     |
 +----------+----------+---------+---------+----------+----------+---------+---------+---------+---------+---------+-------------------+
@@ -24,7 +24,7 @@ def test_report_speedup_a(capfd):
     report("a/y 30 10", Config(), speedups)
     assert capfd.readouterr().out == \
 """
- a/y 30 10 (ms)
+ a/y 30 10 (Run time (ms))
 +----------+------+------+------+--------+------+------+------+
 | #Threads | Min  | P10  | P25  | Median | P75  | P90  | Max  |
 +----------+------+------+------+--------+------+------+------+
@@ -41,7 +41,7 @@ def test_report_efficiency_a(capfd):
     report("a/y 30 10", Config(), efficiencies)
     assert capfd.readouterr().out == \
 """
- a/y 30 10 (ms)
+ a/y 30 10 (Run time (ms))
 +----------+------+------+------+--------+------+------+------+
 | #Threads | Min  | P10  | P25  | Median | P75  | P90  | Max  |
 +----------+------+------+------+--------+------+------+------+
@@ -58,7 +58,7 @@ def test_report_run_time_b(capfd):
     report("b/y 30 10", Config())
     assert capfd.readouterr().out == \
 """
- b/y 30 10 (ms)
+ b/y 30 10 (Run time (ms))
 +----------+---------+----------+----------+---------+----------+----------+----------+---------+---------+---------+-------------------+
 | #Threads |   Min   |   P10    |   P25    | Median  |   P75    |   P90    |   Max    | P75-P25 | P90-P10 | Max-Min |    Mean ± RSD     |
 +----------+---------+----------+----------+---------+----------+----------+----------+---------+---------+---------+-------------------+
@@ -75,7 +75,7 @@ def test_report_speedup_b(capfd):
     report("b/y 30 10", Config(), speedups)
     assert capfd.readouterr().out == \
 """
- b/y 30 10 (ms)
+ b/y 30 10 (Run time (ms))
 +----------+------+------+------+--------+------+------+------+
 | #Threads | Min  | P10  | P25  | Median | P75  | P90  | Max  |
 +----------+------+------+------+--------+------+------+------+
@@ -92,7 +92,7 @@ def test_report_efficiency_b(capfd):
     report("b/y 30 10", Config(), efficiencies)
     assert capfd.readouterr().out == \
 """
- b/y 30 10 (ms)
+ b/y 30 10 (Run time (ms))
 +----------+------+------+------+--------+------+------+------+
 | #Threads | Min  | P10  | P25  | Median | P75  | P90  | Max  |
 +----------+------+------+------+--------+------+------+------+

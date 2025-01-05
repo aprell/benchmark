@@ -46,8 +46,8 @@ def main(args, config):
     outfile = args.output if args.output else "plot.png"
     metric = args.speedup or args.efficiency
     if args.speedup:
-        plot(args.cmds, config, outfile, ylabel="Median speedups", transform=metric)
+        plot(args.cmds, config, outfile, ylabel="Speedup", transform=metric)
     elif args.efficiency:
-        plot(args.cmds, config, outfile, ylabel="Median efficiencies", transform=metric)
+        plot(args.cmds, config, outfile, ylabel="Efficiency", transform=metric)
     else:
-        plot(args.cmds, config, outfile, ylabel=f"Median run times ({config.unit})")
+        plot(args.cmds, config, outfile, ylabel=f"{config.label}")

@@ -21,7 +21,7 @@ def __relative_diff(a, b):
 
 def actual_diff(cmds, config, color=True):
     def format(n):
-        return format_number(n, suffix=f" {config.unit}", color=color)
+        return format_number(n, color=color)
     diff(cmds, config, func=__actual_diff, format=format)
 
 
@@ -35,7 +35,7 @@ def diff(cmds, config, func, format):
     a = np.array(get_stats(cmds[0], config))
     b = np.array(get_stats(cmds[1], config))
     d = np.vectorize(format)(func(a[1:,1:-4].astype(float), b[1:,1:-4].astype(float)))
-    print("\n", cmds[0], "vs", cmds[1])
+    print("\n", cmds[0], "vs", cmds[1], f"({config.label})")
     print_table(np.r_[[a[0,:-4]], np.c_[a[1:,0], d]].tolist())
 
 

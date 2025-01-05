@@ -25,7 +25,7 @@ def test_config_03():
     assert config.num_threads == [1, 2, 4, 8, 16]
     assert config.repetitions == 5
     assert config.match == '"Elapsed time"'
-    assert config.unit == "us"
+    assert config.label == "Run time (us)"
     assert config.environment == {
         "OMP_PLACES": "cores",
         "OMP_PROC_BIND": "close",
