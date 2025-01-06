@@ -18,7 +18,10 @@ OMP_PROC_BIND = close
 OMP_NUM_THREADS = $NUM_THREADS
 
 [Report]
+match = Time
 label = Run time (s)
+#match = Performance
+#label = Performance (GFLOPS)
 ```
 
 ## bench run

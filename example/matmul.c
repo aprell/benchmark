@@ -65,7 +65,14 @@ int main(int argc, char *argv[]) {
         elapsed += omp_get_wtime() - start;
     }
 
-    printf("Time: %.2lf s\n", elapsed / 3);
+    elapsed /= 3;
+
+    // "N^3 operations for N^2 data"
+    double FLOPS = N * N * N * 2 / elapsed;
+    double GFLOPS = FLOPS / 1e9;
+
+    printf("Time: %.2lf s\n", elapsed);
+    printf("Performance: %.2lf GFLOPS\n", GFLOPS);
 
     free(A);
     free(B);
