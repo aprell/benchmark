@@ -36,7 +36,7 @@ def get_num_threads(env):
     """
     num_threads = os.environ.get(env)
     if not num_threads:
-        num_threads = subprocess.check_output("lscpu | grep ^CPU\(s\)", shell=True).split()[1]
+        num_threads = subprocess.check_output(r"lscpu | grep ^CPU\(s\)", shell=True).split()[1]
     return int(num_threads)
 
 
