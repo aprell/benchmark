@@ -39,8 +39,8 @@ def test_get_run_times():
     assert get_run_times("benchmark.output/x_001.log") == [10, 10.1, 9.8]
     assert get_run_times("benchmark.output/x_002.log") == [8, 8.2, 7.9]
     assert get_run_times("benchmark.output/x_004.log") == [6, 5.7, 5.9]
-    assert get_run_times("benchmark.output/x_008.log") == [4, 4.3, 4.1]
-    assert get_run_times("benchmark.output/x_016.log") == []
+    assert get_run_times("benchmark.output/x_008.log", "=") == [4, 4.3, 4.1]
+    assert get_run_times("benchmark.output/x_016.log", ">") == [3.2]
 
     with raises(FileNotFoundError):
         get_run_times("benchmark.output/x_032.log")
