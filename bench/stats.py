@@ -6,7 +6,7 @@ import sys
 
 from pathlib import Path
 
-from bench.utils import get_logfile, get_logfiles, get_run_times
+from bench.utils import get_logfile, get_logfiles, get_numbers
 
 
 def mean_rsd(numbers):
@@ -123,7 +123,7 @@ def write_stats(cmd, config, csv_file):
     with open(csv_file, "w") as file:
         stats = [["#Threads"] + headers]
         for n, logfile in get_logfiles(cmd, ext="log"):
-            stats.append([n] + summarize(get_run_times(logfile, config.match)))
+            stats.append([n] + summarize(get_numbers(logfile, config.match)))
         print_csv(stats, file=file)
 
 

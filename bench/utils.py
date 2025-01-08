@@ -65,15 +65,15 @@ def get_logfiles(cmd, ext=None):
     return [(get_num_threads(logfile), logfile) for logfile in sorted(logfiles)]
 
 
-def get_run_times(logfile, pattern=r"[^:]*"):
-    run_times = []
+def get_numbers(logfile, pattern=r"[^:]*"):
+    numbers = []
     with open(logfile) as file:
         elapsed = re.compile(pattern.strip('"') + r":? *(\d+(?:\.\d*)?)")
         for line in file:
             match = re.search(elapsed, line)
             if match:
-                run_times.append(float(match.group(1)))
-    return run_times
+                numbers.append(float(match.group(1)))
+    return numbers
 
 
 def read_list(lst, sep=",", elem=str):

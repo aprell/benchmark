@@ -1,6 +1,6 @@
 from pytest import raises
 
-from bench.utils import get_logfile, get_logfiles, get_run_times, read_list
+from bench.utils import get_logfile, get_logfiles, get_numbers, read_list
 
 
 def test_get_logfile():
@@ -35,15 +35,15 @@ def test_get_logfiles():
     ]
 
 
-def test_get_run_times():
-    assert get_run_times("benchmark.output/x_001.log") == [10, 10.1, 9.8]
-    assert get_run_times("benchmark.output/x_002.log") == [8, 8.2, 7.9]
-    assert get_run_times("benchmark.output/x_004.log") == [6, 5.7, 5.9]
-    assert get_run_times("benchmark.output/x_008.log", "=") == [4, 4.3, 4.1]
-    assert get_run_times("benchmark.output/x_016.log", ">") == [3.2]
+def test_get_numbers():
+    assert get_numbers("benchmark.output/x_001.log") == [10, 10.1, 9.8]
+    assert get_numbers("benchmark.output/x_002.log") == [8, 8.2, 7.9]
+    assert get_numbers("benchmark.output/x_004.log") == [6, 5.7, 5.9]
+    assert get_numbers("benchmark.output/x_008.log", "=") == [4, 4.3, 4.1]
+    assert get_numbers("benchmark.output/x_016.log", ">") == [3.2]
 
     with raises(FileNotFoundError):
-        get_run_times("benchmark.output/x_032.log")
+        get_numbers("benchmark.output/x_032.log")
 
 
 def test_read_list():
