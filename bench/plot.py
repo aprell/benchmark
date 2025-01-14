@@ -3,30 +3,38 @@ import numpy as np
 
 from bench.args import add_argument
 from bench.stats import get_stats
+from bench.utils import get_logfiles, get_numbers
 
 
 def plot(cmds, config, outfile, ylabel, xlabel="Number of threads", transform=None):
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
+    logfiles = [get_logfiles(cmd.split(), ext="log") for cmd in cmds]
+    if all(len(logs) == 1 for logs in logfiles):
+        numbers = [get_numbers(logs[0][1], config.match) for logs in logfiles]
+        # Ignore transform
+        plt.ylabel(f"{config.label}")
+        plt.boxplot(numbers, labels=cmds)
+    else:
+        plt.xlabel(xlabel)
+        plt.ylabel(ylabel)
 
-    for cmd in cmds:
-        stats = get_stats(cmd, config)
-        if transform:
-            stats = transform(stats)
-        # Remove column headers
-        stats = np.array(stats[1:])
+        for cmd in cmds:
+            stats = get_stats(cmd, config)
+            if transform:
+                stats = transform(stats)
+            # Remove column headers
+            stats = np.array(stats[1:])
 
-        num_threads = stats[:,0].astype(int)
-        median_values = stats[:,4].astype(float)
-        lower_errors = median_values - stats[:,2].astype(float)
-        upper_errors = stats[:,6].astype(float) - median_values
+            num_threads = stats[:,0].astype(int)
+            median_values = stats[:,4].astype(float)
+            lower_errors = median_values - stats[:,2].astype(float)
+            upper_errors = stats[:,6].astype(float) - median_values
 
-        plt.errorbar(num_threads,
-                     median_values,
-                     yerr=[lower_errors, upper_errors],
-                     label=cmd.strip("./"))
+            plt.errorbar(num_threads,
+                         median_values,
+                         yerr=[lower_errors, upper_errors],
+                         label=cmd.strip("./"))
+            plt.legend()
 
-    plt.legend()
     plt.savefig(outfile)
 
 
