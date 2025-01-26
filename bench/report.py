@@ -1,4 +1,5 @@
 from bench.args import add_argument
+from bench.metrics import speedups
 from bench.stats import get_stats, print_csv, print_table
 
 
@@ -24,5 +25,7 @@ def setup(subparsers):
 
 def main(args, config):
     metric = args.speedup or args.efficiency
+    if args.speedup == "invert":
+        metric = lambda stats: speedups(stats, invert=True)
     for cmd in args.all and config.benchmarks or args.cmds:
         report(cmd, config, transform=metric)

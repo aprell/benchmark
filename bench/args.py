@@ -8,11 +8,12 @@ options = {
         "required": False,
     },
     "--speedup": {
-        "action": "store_const",
+        "action": "store",
         "const": speedups,
+        "nargs": "?",
+        "choices": ["invert"],
         "help": "calculate parallel speedups",
         "required": False,
-
     },
     "--efficiency": {
         "action": "store_const",

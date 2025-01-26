@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from bench.args import add_argument
+from bench.metrics import speedups
 from bench.stats import get_stats
 from bench.utils import get_logfiles, get_numbers
 
@@ -55,6 +56,8 @@ def main(args, config):
     cmds = args.all and config.benchmarks or args.cmds
     outfile = args.output if args.output else "plot.png"
     metric = args.speedup or args.efficiency
+    if args.speedup == "invert":
+        metric = lambda stats: speedups(stats, invert=True)
     if args.speedup:
         plot(cmds, config, outfile, ylabel="Speedup", transform=metric)
     elif args.efficiency:
