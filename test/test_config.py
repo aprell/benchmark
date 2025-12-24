@@ -1,16 +1,16 @@
 from bench.config import Config
 
 
-def test_config_01():
-    config = Config("config.input/01.ini")
+def test_config_01(config_input_dir):
+    config = Config(config_input_dir / "01.ini")
     assert config.benchmarks == []
     assert config.num_threads == [1]
     assert config.repetitions == 10
     assert config.environment == {}
 
 
-def test_config_02():
-    config = Config("config.input/02.ini")
+def test_config_02(config_input_dir):
+    config = Config(config_input_dir / "02.ini")
     assert config.benchmarks == []
     assert config.num_threads == [1, 2, 4, 8, 16]
     assert config.repetitions == 10
@@ -19,8 +19,8 @@ def test_config_02():
     }
 
 
-def test_config_03():
-    config = Config("config.input/03.ini")
+def test_config_03(config_input_dir):
+    config = Config(config_input_dir / "03.ini")
     assert config.benchmarks == ["x", "y", "z"]
     assert config.num_threads == [1, 2, 4, 8, 16]
     assert config.repetitions == 5
