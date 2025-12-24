@@ -3,14 +3,13 @@
 Install package in editable mode for development:
 
 ```console
-$ git clone https://github.com/aprell/benchmark
-$ pip install --user -e benchmark
+$ pip install [--user] -e .
 ```
 
 Run tests:
 
 ```console
-$ (cd benchmark/test && pytest -sv)
+$ pytest -sv
 ```
 
 Why `pytest -s`? Problems with capturing stdout and stderr are documented
