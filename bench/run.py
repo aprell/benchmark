@@ -11,7 +11,7 @@ def run(cmd, config):
 
     for n in config.num_threads:
         logfile = get_logfile(cmd, suffix=n, ext="log")
-        Path(logfile).parent.mkdir(exist_ok=True)
+        Path(logfile).parent.mkdir(parents=True, exist_ok=True)
 
         with open(logfile, "w") as file:
             os.environ.update({
