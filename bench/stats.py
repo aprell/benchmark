@@ -13,7 +13,7 @@ def mean_rsd(numbers):
     """
     Calculate mean and relative standard deviation (RSD) of a series of numbers
     """
-    if sys.version_info >= (3,8):
+    if sys.version_info >= (3, 8):
         mean = statistics.fmean(numbers)
     else:
         mean = statistics.mean(numbers)
@@ -58,7 +58,7 @@ def print_table(stats, file=sys.stdout):
     file.flush()
 
 
-if sys.version_info >= (3,8):
+if sys.version_info >= (3, 8):
     headers = [
         "Min", "P10", "P25", "Median", "P75", "P90", "Max",
         "P75-P25", "P90-P10", "Max-Min", "Mean ± RSD"
@@ -72,12 +72,16 @@ def summarize(numbers):
     if not numbers:
         return []
 
-    if sys.version_info >= (3,8):
+    if sys.version_info >= (3, 8):
         try:
             Q = quartiles(numbers)
             D = deciles(numbers)
         except statistics.StatisticsError:
             # Must have at least two data points
+            # Changed in version 3.13: No longer raises an exception for an
+            # input with only a single data point. This allows quantile
+            # estimates to be built up one sample point at a time becoming
+            # gradually more refined with each new data point.
             Q = None
             D = None
 

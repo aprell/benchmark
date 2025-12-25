@@ -1,3 +1,5 @@
+import sys
+
 from random import shuffle
 
 from pytest import approx
@@ -14,19 +16,34 @@ def test_summarize_0():
 def test_summarize_1():
     numbers = [1]
     stats = summarize(numbers)
-    assert stats == [
-        1,
-        None,
-        None,
-        None,
-        None,
-        None,
-        1,
-        None,
-        None,
-        0,
-        (1.0, None)
-    ]
+    if (sys.version_info >= (3, 13)):
+        assert stats == [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            (1.0, None)
+        ]
+    else:
+        assert stats == [
+            1,
+            None,
+            None,
+            None,
+            None,
+            None,
+            1,
+            None,
+            None,
+            0,
+            (1.0, None)
+        ]
 
 
 def test_summarize_2():
