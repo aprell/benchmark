@@ -29,13 +29,9 @@ def plot(cmds, config, outfile, ylabel, xlabel="Number of threads", transform=No
             median_values = stats[:,4].astype(float)
             p10_values = stats[:,2].astype(float)
             p90_values = stats[:,6].astype(float)
-            lower_errors = median_values - p10_values
-            upper_errors = p90_values - median_values
 
-            plt.errorbar(num_threads,
-                         median_values,
-                         yerr=[lower_errors, upper_errors],
-                         label=cmd.strip("./"))
+            plt.plot(num_threads, median_values, label=cmd.strip("./"))
+            plt.fill_between(num_threads, p10_values, p90_values, alpha=0.5)
             plt.legend()
 
     plt.savefig(outfile)
